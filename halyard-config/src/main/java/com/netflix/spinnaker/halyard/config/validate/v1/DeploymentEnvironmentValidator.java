@@ -23,6 +23,7 @@ import com.netflix.spinnaker.halyard.config.model.v1.node.DeploymentConfiguratio
 import com.netflix.spinnaker.halyard.config.model.v1.node.DeploymentEnvironment;
 import com.netflix.spinnaker.halyard.config.model.v1.node.DeploymentEnvironment.DeploymentType;
 import com.netflix.spinnaker.halyard.config.model.v1.node.Validator;
+import com.netflix.spinnaker.halyard.config.model.v1.providers.aws.AwsAccount;
 import com.netflix.spinnaker.halyard.config.model.v1.providers.google.GoogleAccount;
 import com.netflix.spinnaker.halyard.config.model.v1.providers.kubernetes.KubernetesAccount;
 import com.netflix.spinnaker.halyard.config.problem.v1.ConfigProblemSetBuilder;
@@ -76,6 +77,8 @@ public class DeploymentEnvironmentValidator extends Validator<DeploymentEnvironm
       p.addProblem(Problem.Severity.WARNING, "Support for distributed deployments on GCE aren't fully supported yet.");
     } else if (account instanceof KubernetesAccount) {
       kubernetesAccountValidator.ensureKubectlExists(p);
+    } else if (account instanceof AwsAccount) {
+      p.addProblem(Problem.Severity.WARNING, "Support for distributed deployments on AWS aren't fully supported yet.");
     } else {
       p.addProblem(Problem.Severity.FATAL, "Account " + accountName + " is not in a provider that supports distributed installation of Spinnaker yet");
     }
